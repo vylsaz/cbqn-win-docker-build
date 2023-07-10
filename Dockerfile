@@ -38,3 +38,6 @@ RUN cp $TOOLCHAIN_PREFIX/x86_64-w64-mingw32/bin/libunwind.dll /build/bin
 RUN cp $TOOLCHAIN_PREFIX/x86_64-w64-mingw32/bin/libwinpthread-1.dll /build/bin
 WORKDIR /build/bin
 RUN zip -r /build/bqn.zip .
+
+ENTRYPOINT ["cp", "/build/bqn.zip"]
+CMD ["/opt/mount"]

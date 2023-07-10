@@ -8,7 +8,7 @@ docker build -t wbqn .
 ```
 Then you can get BQN.exe and the required .dll's by:
 ```sh
-docker run -v .\:/opt/mount --rm -i -t wbqn bash -c "cp /build/bqn.zip /opt/mount"
+docker run -v .\:/opt/mount --rm -d wbqn
 ```
 
 ## License
