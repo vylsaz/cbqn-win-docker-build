@@ -29,7 +29,7 @@ RUN git clone --depth 1 --branch $BRANCH https://github.com/dzaima/CBQN.git
 WORKDIR /build/CBQN
 COPY ./manifest.rc ./manifest.rc
 COPY ./BQN.exe.manifest ./BQN.exe.manifest
-RUN x86_64-w64-mingw32-windres manifest.rc manifest.o
+RUN x86_64-w64-mingw32-windres manifest.rc -o manifest.o
 ARG NATIVE=1
 RUN build/build static-bin replxx singeli native=$NATIVE os=windows \
     FFI=1 lf+="manifest.o" f="-I/build/include/" lf+="-L/build/lib/" \
