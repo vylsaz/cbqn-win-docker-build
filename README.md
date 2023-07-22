@@ -2,7 +2,7 @@
 Build CBQN for Windows with Docker
 
 ## Usage
-cd to the folder with this README. Build with:
+cd to the folder where you can find this README and Dockerfiles. Build with:
 ```sh
 docker build --pull --rm -f "Dockerfile to use" -t wbqn .
 ```
