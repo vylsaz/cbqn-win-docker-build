@@ -25,9 +25,11 @@ RUN make && make install
 
 WORKDIR /build
 ARG BRANCH=develop
+ADD https://api.github.com/repos/dzaima/CBQN/git/refs/heads/$BRANCH /tmp/ver.json
 RUN git clone --depth 1 --branch $BRANCH https://github.com/dzaima/CBQN.git
 WORKDIR /build/CBQN
-RUN build/build replxx singeli os=windows \
+ARG NATIVE=1
+RUN build/build replxx singeli native=$NATIVE os=windows \
     FFI=1 f="-I/build/include/" lf+="-L/build/lib/" \
     CC=x86_64-w64-mingw32-clang CXX=x86_64-w64-mingw32-clang++
 
