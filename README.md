@@ -3,11 +3,11 @@ Build CBQN for Windows with Docker
 
 ## Usage
 cd to the folder where you can find this README and Dockerfiles. Build with:
-```sh
-docker build --pull --rm -f "Dockerfile to use" -t wbqn .
+```bat
+docker build --pull --rm -t wbqn .
 ```
-Then you can get BQN.exe and the required .dll's by:
-```sh
+Then you can get BQN.exe by:
+```bat
 docker run -v .\:/opt/mount --rm -d wbqn
 ```
 

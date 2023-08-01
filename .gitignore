@@ -1,3 +1,4 @@
 *.zip
 *.exe
 .cbqn_repl_history
+trash/*
