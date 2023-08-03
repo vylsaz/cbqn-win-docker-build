@@ -2,10 +2,7 @@
 FROM mstorsjo/llvm-mingw:latest
 
 WORKDIR /build
-RUN apt-get update && \
-    apt-get install -y zstd && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y zstd
 
 RUN mkdir -p download include lib bin
 
