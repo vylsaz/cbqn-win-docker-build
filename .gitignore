@@ -1,4 +1,5 @@
 *.zip
 *.exe
+*.bat
 .cbqn_repl_history
 trash/*
