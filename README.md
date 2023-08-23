@@ -10,7 +10,7 @@ docker build --pull --rm -t wbqn "."
 ```
 You can pass in arguments by adding `--build-arg ARG=VALUE` to the command. The arguments are:
 - `BRANCH`, the git branch of dzaima/CBQN to clone from, default: `develop`
-- `NATIVE`, should all instructions supported by the local machine be enabled, default: `0`
+- `NATIVE`, should all instructions supported by the local machine be enabled, default: `1`
 - `VERSION`, the version to report by CBQN, default: `""` (use commit hash)
 
 Then, you can get BQN.exe by:
