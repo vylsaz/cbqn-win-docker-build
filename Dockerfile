@@ -21,15 +21,16 @@ RUN make && make install
 
 WORKDIR /build
 ARG BRANCH=develop
-ADD https://api.github.com/repos/dzaima/CBQN/git/refs/heads/$BRANCH /tmp/ver.json
+ARG NATIVE=1
+ARG VERSION=""
+# disable caching for git clone
+ADD https://worldtimeapi.org/api/timezone/Etc/UTC /tmp/time.json
 RUN git clone --depth 1 --branch $BRANCH https://github.com/dzaima/CBQN.git
 WORKDIR /build/CBQN
 COPY ./bqnres.rc ./bqnres.rc
 COPY ./BQN.exe.manifest ./BQN.exe.manifest
 COPY ./BQN.ico ./BQN.ico
 RUN x86_64-w64-mingw32-windres bqnres.rc -o bqnres.o
-ARG NATIVE=1
-ARG VERSION=""
 RUN build/build static-bin replxx singeli native=$NATIVE os=windows FFI=1 \
     v=$VERSION lf+="bqnres.o" f="-I/build/include/" lf+="-L/build/lib/" \
     CC=x86_64-w64-mingw32-clang CXX=x86_64-w64-mingw32-clang++
