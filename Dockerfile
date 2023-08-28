@@ -23,6 +23,7 @@ WORKDIR /build
 ARG BRANCH=develop
 ARG NATIVE=1
 ARG VERSION=""
+ARG STRIP=0
 # disable caching for git clone
 ADD https://worldtimeapi.org/api/timezone/Etc/UTC /tmp/time.json
 RUN git clone --depth 1 --branch $BRANCH https://github.com/dzaima/CBQN.git
@@ -34,7 +35,7 @@ RUN x86_64-w64-mingw32-windres bqnres.rc -o bqnres.o
 RUN build/build static-bin replxx singeli native=$NATIVE os=windows FFI=1 \
     v=$VERSION lf="bqnres.o" f="-I/build/include/" lf="-L/build/lib/" \
     CC=x86_64-w64-mingw32-clang CXX=x86_64-w64-mingw32-clang++
-RUN x86_64-w64-mingw32-strip --strip-unneeded BQN.exe
+RUN if [ $STRIP -ne 0 ] ; then x86_64-w64-mingw32-strip --strip-unneeded BQN.exe ; fi
 
 ENTRYPOINT ["cp", "/build/CBQN/BQN.exe"]
 CMD ["/opt/mount"]

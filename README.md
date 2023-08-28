@@ -12,6 +12,7 @@ You can pass in arguments by adding `--build-arg ARG=VALUE` to the command. The 
 - `BRANCH`, the git branch of dzaima/CBQN to clone from, default: `develop`
 - `NATIVE`, should all instructions supported by the local machine be enabled, default: `1`
 - `VERSION`, the version to report by CBQN, default: `""` (use commit hash)
+- `STRIP`, should BQN.exe be stripped, default: `0`
 
 Then, you can get BQN.exe by:
 ```bat
