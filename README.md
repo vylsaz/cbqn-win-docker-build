@@ -31,3 +31,5 @@ docker rmi wbqn
 The BQN logo (BQN.ico) is licensed ISC. Other files are licensed MIT.  
 
 Under `licenses/` are licenses to be distributed with the CBQN binary.
+
+CBQN is dual-licensed LGPLv3 and MPL2, you can choose one.
