@@ -4,27 +4,25 @@ Build [CBQN](https://github.com/dzaima/CBQN) for Windows with Docker
 ## Usage
 `cd` to the folder where you can find this README and Dockerfiles. 
 
-For example, if you want to call your image "wbqn":
+For example, if you want to call your image "winbqn", you want to build with:
 
-Build with:
 ```bat
-docker build --pull --rm -t wbqn "."
+docker build --pull --rm -t winbqn "."
 ```
 You can pass in arguments by adding `--build-arg ARG=VALUE` to the command. The arguments are:
 - `BRANCH`, the git branch of dzaima/CBQN to clone from, default: `develop`
 - `NATIVE`, should all instructions supported by the local machine be enabled, default: `1`
 - `VERSION`, the version to report by CBQN, default: `""` (use commit hash)
 - `DEBUG`, should sanity checks and debug symbols be enabled, default: `0`
-- `STRIP`, should BQN.exe be stripped, default: `0`
 
 Then, you can get BQN.exe by:
 ```bat
-docker run -v ".:/opt/mount" --rm -d wbqn
+docker run -v ".:/opt/mount" --rm -d winbqn
 ```
 
 Finally, you can remove the image by:
 ```bat
-docker rmi wbqn
+docker rmi winbqn
 ```
 
 ## License

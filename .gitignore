@@ -1,5 +1,9 @@
 *.zip
 *.exe
+*.dll
+*.lib
+*.h
 *.bat
 .cbqn_repl_history
 trash/*
+libcbqn/*

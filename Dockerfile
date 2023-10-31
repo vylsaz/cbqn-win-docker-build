@@ -25,7 +25,6 @@ ARG BRANCH=develop
 ARG NATIVE=1
 ARG VERSION=""
 ARG DEBUG=0
-ARG STRIP=0
 # disable caching for git clone
 ADD https://worldtimeapi.org/api/timezone/Etc/UTC /tmp/time.json
 RUN git clone --recurse-submodules --depth 1 -b $BRANCH https://github.com/dzaima/CBQN.git
@@ -34,11 +33,16 @@ COPY ./bqnres.rc ./bqnres.rc
 COPY ./BQN.exe.manifest ./BQN.exe.manifest
 COPY ./BQN.ico ./BQN.ico
 RUN x86_64-w64-mingw32-windres bqnres.rc -o bqnres.o
-RUN build/build static-bin replxx singeli native=$NATIVE os=windows FFI=1 \
-    v=$VERSION debug=$DEBUG lf="bqnres.o" f="-I/build/include/" lf="-L/build/lib/" \
+RUN build/build static-bin replxx singeli os=windows FFI=1 \
+    native=$NATIVE debug=$DEBUG v=$VERSION \
+    f="-I/build/include/" lf="-L/build/lib/" lf="bqnres.o" lf="-Wl,--Xlink=-Brepro" \
     CC=x86_64-w64-mingw32-clang CXX=x86_64-w64-mingw32-clang++
-RUN if [ $DEBUG = 0 ] && [ $STRIP != 0 ] ; then \
-    x86_64-w64-mingw32-strip --strip-unneeded BQN.exe ; fi
+RUN build/build static-bin shared singeli os=windows FFI=1 \
+    native=$NATIVE debug=$DEBUG \
+    f="-I/build/include/" lf="-L/build/lib/" lf="-Wl,--output-def=cbqn.def,--Xlink=-Brepro" \
+    CC=x86_64-w64-mingw32-clang
+RUN x86_64-w64-mingw32-dlltool -D cbqn.dll -d cbqn.def -l cbqn.lib
 
-ENTRYPOINT ["cp", "/build/CBQN/BQN.exe"]
+ENTRYPOINT ["cp", "/build/CBQN/BQN.exe", \
+    "/build/CBQN/cbqn.dll", "/build/CBQN/cbqn.lib", "/build/CBQN/include/bqnffi.h"]
 CMD ["/opt/mount"]
