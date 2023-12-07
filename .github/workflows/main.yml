@@ -1,0 +1,29 @@
+name: main
+on: workflow_dispatch
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+      - 
+        name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          push: false
+          tags: build-bqn
+          build-args: |
+            NATIVE=0
+      - 
+        name: Get Zip
+        run: docker run -v ".:/opt/mount" --rm -d build-bqn
+      - 
+        name: Remove Docker Image
+        run: docker image rm -f build-bqn
+      - 
+        name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            bqn.zip
