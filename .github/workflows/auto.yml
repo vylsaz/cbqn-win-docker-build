@@ -1,8 +1,13 @@
-name: main
-on: workflow_dispatch
+name: auto
+on: 
+  schedule:
+    - cron: '0 0 * * 0,4'
+  workflow_dispatch:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - 
         name: Checkout
@@ -15,15 +20,26 @@ jobs:
           tags: build-bqn
           build-args: |
             NATIVE=0
+            BRANCH=develop
       - 
         name: Get Zip
         run: docker run -v ".:/opt/mount" --rm -d build-bqn
       - 
         name: Remove Docker Image
         run: docker image rm -f build-bqn
+      -
+        name: Get sha256
+        run: sha256sum bqn.zip > sha256.txt
       - 
         name: Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: auto
+          prerelease: true
+          body: |
+            Automatically generated release.
+
+            Includes: licenses, libcbqn, and standalone executable. Branch: develop.
           files: |
             bqn.zip
+            sha256.txt
