@@ -4,7 +4,7 @@ FROM mstorsjo/llvm-mingw:latest
 WORKDIR /build
 RUN apt-get update && apt-get install -y zstd
 
-RUN mkdir -p download include lib bin
+RUN mkdir -p download include lib bin out
 
 WORKDIR /build/download
 RUN wget -O libffi.tar.zst \
@@ -43,6 +43,12 @@ RUN build/build static-bin shared singeli os=windows FFI=1 \
     CC=x86_64-w64-mingw32-clang
 RUN x86_64-w64-mingw32-dlltool -D cbqn.dll -d cbqn.def -l cbqn.lib
 
-ENTRYPOINT ["cp", "/build/CBQN/BQN.exe", \
-    "/build/CBQN/cbqn.dll", "/build/CBQN/cbqn.lib", "/build/CBQN/include/bqnffi.h"]
+WORKDIR /build/out
+RUN cp /build/CBQN/BQN.exe .
+RUN mkdir libcbqn
+RUN cp /build/CBQN/cbqn.lib /build/CBQN/cbqn.dll /build/CBQN/include/bqnffi.h ./libcbqn/
+COPY ./licenses/ ./licenses/
+RUN zip -r bqn.zip .
+
+ENTRYPOINT ["cp", "/build/out/bqn.zip"]
 CMD ["/opt/mount"]
