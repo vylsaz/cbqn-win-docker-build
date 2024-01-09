@@ -35,7 +35,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if git show-ref --tags --verify --quiet "refs/tags/auto"; then
-            gh release delete auto --cleanup-tag -y
+            gh release delete auto -y
           fi
       - 
         name: Release
