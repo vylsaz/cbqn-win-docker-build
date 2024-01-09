@@ -12,6 +12,8 @@ jobs:
       - 
         name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - 
         name: Build Docker Image
         uses: docker/build-push-action@v5
@@ -24,12 +26,15 @@ jobs:
       - 
         name: Get Zip
         run: docker run -v ".:/opt/mount" --rm -d build-bqn
-      - 
-        name: Remove Docker Image
-        run: docker image rm -f build-bqn
       -
         name: Get sha256
         run: sha256sum bqn.zip > sha256.txt
+      -
+        name: Delete previous release
+        run: |
+          if git show-ref --tags --verify --quiet "refs/tags/auto"; then
+            gh release delete auto --cleanup-tag -y
+          fi
       - 
         name: Release
         uses: softprops/action-gh-release@v1
