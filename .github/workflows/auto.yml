@@ -31,6 +31,8 @@ jobs:
         run: sha256sum bqn.zip > sha256.txt
       -
         name: Delete previous release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if git show-ref --tags --verify --quiet "refs/tags/auto"; then
             gh release delete auto --cleanup-tag -y
