@@ -42,6 +42,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: auto
+          draft: false
           prerelease: true
           body: |
             Automatically generated release.
