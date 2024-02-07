@@ -28,7 +28,9 @@ jobs:
         run: docker run -v ".:/opt/mount" --rm -d build-bqn
       -
         name: Get sha256
-        run: sha256sum bqn.zip > sha256.txt
+        run: |
+          SHA256=$(sha256sum bqn.zip | awk '{print $1}')
+          echo "SHA256=${SHA256}" >> $GITHUB_ENV
       -
         name: Delete previous release
         env:
@@ -44,10 +46,23 @@ jobs:
           tag_name: auto
           draft: false
           prerelease: true
+          files: bqn.zip
           body: |
             Automatically generated release.
 
-            Includes: licenses, libcbqn, and standalone executable. Branch: develop.
-          files: |
-            bqn.zip
-            sha256.txt
+            Branch: develop.
+
+            | file    | SHA256              |
+            | ------- | ------------------- |
+            | bqn.zip | `${{ env.SHA256 }}` |
+
+            Included:
+              - BQN.exe: stand alone executable
+              - libcbqn/cbqn.dll: CBQN as a dynamic library
+              - libcbqn/cbqn.lib: for linking cbqn.dll
+              - libcbqn/bqnffi.h: C header file
+              - licenses/: licenses for CBQN
+              
+            Note:
+              * uses UCRT 
+              * UTF-8 support for BQN.exe should work for Windows 10 Version 1903 or later, and Windows 11
