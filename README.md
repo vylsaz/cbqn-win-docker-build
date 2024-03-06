@@ -7,7 +7,7 @@ Build [CBQN](https://github.com/dzaima/CBQN) for Windows with Docker
 For example, if you want to call your image "winbqn", you want to build with:
 
 ```bat
-docker build --pull --rm -t winbqn "."
+docker builder build --pull --rm -t winbqn "."
 ```
 You can pass in arguments by adding `--build-arg ARG=VALUE` to the command. The arguments are:
 - `BRANCH`, the git branch of dzaima/CBQN to clone from, default: `develop`
