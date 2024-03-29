@@ -21,6 +21,7 @@ jobs:
       BRANCH: develop
       VERSION: ""
       TAG: auto
+      PRERELEASE: true
     steps:
       - 
         name: Checkout
@@ -34,6 +35,7 @@ jobs:
             echo "BRANCH=v${{ inputs.version }}" >> $GITHUB_ENV
             echo "VERSION=${{ inputs.version }}" >> $GITHUB_ENV
             echo "TAG=cbqn-${{ inputs.version }}" >> $GITHUB_ENV
+            echo "PRERELEASE=false" >> $GITHUB_ENV
           fi
       - 
         name: Build Docker Image
@@ -68,7 +70,7 @@ jobs:
         with:
           tag_name: ${{ env.TAG }}
           draft: false
-          prerelease: true
+          prerelease: ${{ env.PRERELEASE }}
           files: bqn.zip
           body: |
             Branch: `${{ env.BRANCH }}`
