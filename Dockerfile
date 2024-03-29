@@ -48,6 +48,7 @@ RUN cp /build/CBQN/BQN.exe .
 RUN mkdir libcbqn
 RUN cp /build/CBQN/cbqn.lib /build/CBQN/cbqn.dll /build/CBQN/include/bqnffi.h ./libcbqn/
 COPY ./licenses/ ./licenses/
+COPY ./release.txt ./readme.txt
 RUN zip -r bqn.zip .
 
 ENTRYPOINT ["cp", "/build/out/bqn.zip"]

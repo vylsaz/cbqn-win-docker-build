@@ -1,0 +1,10 @@
+Included:
+  - BQN.exe: stand alone executable
+  - libcbqn/cbqn.dll: CBQN as a dynamic library
+  - libcbqn/cbqn.lib: for linking cbqn.dll
+  - libcbqn/bqnffi.h: C header file
+  - licenses/: licenses for CBQN
+
+Note:
+  * uses UCRT 
+  * UTF-8 support for BQN.exe should work for Windows 10 Version 1903 or later, and Windows 11

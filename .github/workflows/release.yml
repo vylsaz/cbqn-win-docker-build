@@ -1,19 +1,40 @@
-name: auto
+name: release
 on: 
   schedule:
     - cron: '0 0 * * 0,4'
   workflow_dispatch:
+    inputs:
+      version:
+        description: "CBQN Version"
+        default: ""
+        required: false
+      delete_prev:
+        description: "Delete previous release"
+        type: boolean
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      SHA256: ""
+      BRANCH: develop
+      VERSION: ""
+      TAG: auto
     steps:
       - 
         name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      -
+        name: Set branch
+        run: |
+          if [ ! -z ${{ inputs.version }} ]; then
+            echo "BRANCH=v${{ inputs.version }}" >> $GITHUB_ENV
+            echo "VERSION=${{ inputs.version }}" >> $GITHUB_ENV
+            echo "TAG=cbqn-${{ inputs.version }}" >> $GITHUB_ENV
+          fi
       - 
         name: Build Docker Image
         uses: docker/build-push-action@v5
@@ -22,7 +43,8 @@ jobs:
           tags: build-bqn
           build-args: |
             NATIVE=0
-            BRANCH=develop
+            BRANCH=${{ env.BRANCH }}
+            VERSION=${{ env.VERSION }}
       - 
         name: Get Zip
         run: docker run -v ".:/opt/mount" --rm -d build-bqn
@@ -33,36 +55,22 @@ jobs:
           echo "SHA256=${SHA256}" >> $GITHUB_ENV
       -
         name: Delete previous release
+        if: ${{ contains(inputs.delete_prev, 'true') }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git show-ref --tags --verify --quiet "refs/tags/auto"; then
-            gh release delete auto -y
+          if git show-ref --tags --verify --quiet "refs/tags/${{ env.TAG }}"; then
+            gh release delete ${{ env.TAG }} -y
           fi
       - 
         name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: auto
+          tag_name: ${{ env.TAG }}
           draft: false
           prerelease: true
           files: bqn.zip
           body: |
-            Automatically generated release.
+            Branch: `${{ env.BRANCH }}`
 
-            Branch: develop.
-
-            | file    | SHA256              |
-            | ------- | ------------------- |
-            | bqn.zip | `${{ env.SHA256 }}` |
-
-            Included:
-              - BQN.exe: stand alone executable
-              - libcbqn/cbqn.dll: CBQN as a dynamic library
-              - libcbqn/cbqn.lib: for linking cbqn.dll
-              - libcbqn/bqnffi.h: C header file
-              - licenses/: licenses for CBQN
-              
-            Note:
-              * uses UCRT 
-              * UTF-8 support for BQN.exe should work for Windows 10 Version 1903 or later, and Windows 11
+            SHA256: `${{ env.SHA256 }}`
