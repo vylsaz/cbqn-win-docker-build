@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 0
       -
-        name: Set branch
+        name: Set Branch
         run: |
           if [ ! -z ${{ inputs.version }} ]; then
             echo "BRANCH=v${{ inputs.version }}" >> $GITHUB_ENV
@@ -42,21 +42,25 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: false
-          tags: build-bqn
+          tags: winbqn
           build-args: |
             NATIVE=0
             BRANCH=${{ env.BRANCH }}
             VERSION=${{ env.VERSION }}
       - 
         name: Get Zip
-        run: docker run -v ".:/opt/mount" --rm -d build-bqn
+        run: |
+          docker create --name build winbqn
+          docker cp build:/build/out/bqn.zip .
+          docker rm build
+          docker rmi winbqn
       -
-        name: Get sha256
+        name: Get SHA256
         run: |
           SHA256=$(sha256sum bqn.zip | awk '{print $1}')
           echo "SHA256=${SHA256}" >> $GITHUB_ENV
       -
-        name: Delete previous release
+        name: Delete Previous Release
         if: ${{ contains(inputs.delete_prev, 'true') }}
         env:
           GH_TOKEN: ${{ github.token }}

@@ -2,6 +2,7 @@
 *.exe
 *.dll
 *.lib
+*.def
 *.h
 *.bat
 .cbqn_repl_history
