@@ -53,7 +53,6 @@ jobs:
           docker create --name build winbqn
           docker cp build:/build/out/bqn.zip .
           docker rm build
-          docker rmi winbqn
       -
         name: Get SHA256
         run: |
