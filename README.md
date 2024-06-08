@@ -15,6 +15,7 @@ You can pass in arguments by adding `--build-arg ARG=VALUE` to the command. The 
 - `VERSION`, the version to report by CBQN, default: `""` (use commit hash)
 - `EXE_OPTS`, other options for build when building the executable, default: `""`
 - `DLL_OPTS`, other options for build when building the shared library, default: `""`
+- `REPLXX`, use replxx for the repl, default: `1`
 
 Then, you can get bqn.zip by:
 ```powershell

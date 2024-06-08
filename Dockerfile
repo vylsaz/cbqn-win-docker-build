@@ -23,6 +23,7 @@ RUN make && make install
 WORKDIR /build
 ARG BRANCH=develop
 ARG NATIVE=0
+ARG REPLXX=1
 ARG VERSION=""
 ARG EXE_OPTS=""
 ARG DLL_OPTS=""
@@ -34,7 +35,7 @@ COPY ./bqnres.rc ./bqnres.rc
 COPY ./BQN.exe.manifest ./BQN.exe.manifest
 COPY ./BQN.ico ./BQN.ico
 RUN x86_64-w64-mingw32-windres bqnres.rc -o bqnres.o
-RUN build/build static-bin replxx singeli os=windows FFI=1 \
+RUN build/build static-bin replxx=${REPLXX} singeli os=windows FFI=1 \
     native=${NATIVE} v=${VERSION} ${EXE_OPTS} \
     f="-I/build/include/" lf="-L/build/lib/" lf="bqnres.o" lf="-Wl,--Xlink=-Brepro" \
     CC=x86_64-w64-mingw32-clang CXX=x86_64-w64-mingw32-clang++
