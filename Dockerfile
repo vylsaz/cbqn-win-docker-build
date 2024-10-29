@@ -27,7 +27,6 @@ RUN make && make install
 
 WORKDIR /build
 # disable caching for git clone
-ADD https://worldtimeapi.org/api/timezone/Etc/UTC /tmp/time.json
 RUN git clone --recurse-submodules --depth 1 -b ${BRANCH} https://github.com/dzaima/CBQN.git
 WORKDIR /build/CBQN
 COPY ./bqnres.rc ./bqnres.rc
