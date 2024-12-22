@@ -7,6 +7,7 @@ ARG REPLXX=1
 ARG VERSION=""
 ARG EXE_OPTS=""
 ARG DLL_OPTS=""
+ARG LIB_OPTS=""
 
 ENV HOST=x86_64-w64-mingw32
 ENV LIBFFI_VER=3.4.6
@@ -33,6 +34,7 @@ WORKDIR /build/CBQN
 COPY ./bqnres.rc ./bqnres.rc
 COPY ./BQN.exe.manifest ./BQN.exe.manifest
 COPY ./BQN.ico ./BQN.ico
+COPY ./libcbqn.mri ./libcbqn.mri
 RUN ${HOST}-windres bqnres.rc -o bqnres.o
 RUN build/build static-bin replxx=${REPLXX} singeli os=windows FFI=1 \
     native=${NATIVE} v=${VERSION} ${EXE_OPTS} CC=${HOST}-clang CXX=${HOST}-clang++ \
@@ -41,9 +43,14 @@ RUN build/build static-bin shared singeli os=windows FFI=1 \
     native=${NATIVE} v=${VERSION} ${DLL_OPTS} CC=${HOST}-clang \
     f="-I/build/include/" lf="-L/build/lib/ -Wl,--output-def=cbqn.def,--Xlink=-Brepro"
 RUN ${HOST}-dlltool -D cbqn.dll -d cbqn.def -l cbqn.lib
+RUN build/build static-lib singeli os=windows FFI=1 \
+    native=${NATIVE} v=${VERSION} ${LIB_OPTS} CC=${HOST}-clang \
+    f="-I/build/include/" OUTPUT=libcbqn1.a
+RUN ${HOST}-ar -M <libcbqn.mri
 
 WORKDIR /build/out/bqn/libcbqn
-RUN cp /build/CBQN/cbqn.lib /build/CBQN/cbqn.dll /build/CBQN/include/bqnffi.h .
+RUN cp /build/CBQN/cbqn.lib /build/CBQN/cbqn.dll /build/CBQN/libcbqn.a \
+    /build/CBQN/include/bqnffi.h .
 WORKDIR /build/out/bqn
 RUN cp /build/CBQN/BQN.exe .
 COPY ./licenses/ ./licenses/

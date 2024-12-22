@@ -52,12 +52,12 @@ jobs:
         name: Get Zip
         run: |
           docker create --name build winbqn
-          docker cp build:/build/out/bqn.zip .
+          docker cp build:/build/out/bqn.zip cbqn-ucrt-x86_64.zip
           docker rm build
       -
         name: Get SHA256
         run: |
-          SHA256=$(sha256sum bqn.zip | awk '{print $1}')
+          SHA256=$(sha256sum cbqn-ucrt-x86_64.zip | awk '{print $1}')
           echo "SHA256=${SHA256}" >> $GITHUB_ENV
       -
         name: Delete Previous Release
@@ -75,7 +75,7 @@ jobs:
           tag_name: ${{ env.TAG }}
           draft: false
           prerelease: ${{ env.PRERELEASE }}
-          files: bqn.zip
+          files: cbqn-ucrt-x86_64.zip
           body: |
             Branch: `${{ env.BRANCH }}`
 

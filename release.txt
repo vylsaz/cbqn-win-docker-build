@@ -1,9 +1,11 @@
 Included:
   - BQN.exe: stand alone executable
+  - libcbqn/bqnffi.h: C header file
   - libcbqn/cbqn.dll: CBQN as a dynamic library
   - libcbqn/cbqn.lib: for linking cbqn.dll
-  - libcbqn/bqnffi.h: C header file
+  - libcbqn/libcbqn.a: static library, for use with a mingw compiler of _corresponding C runtime_
   - licenses/: licenses for CBQN
+
 
 Note:
   * uses UCRT 
