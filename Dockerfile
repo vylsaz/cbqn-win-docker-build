@@ -42,10 +42,11 @@ RUN build/build static-bin shared singeli os=windows FFI=1 \
     f="-I/build/include/" lf="-L/build/lib/ -Wl,--output-def=cbqn.def,--Xlink=-Brepro"
 RUN ${HOST}-dlltool -D cbqn.dll -d cbqn.def -l cbqn.lib
 
-RUN mkdir -p /build/out/libcbqn
-WORKDIR /build/out
+WORKDIR /build/out/bqn/libcbqn
+RUN cp /build/CBQN/cbqn.lib /build/CBQN/cbqn.dll /build/CBQN/include/bqnffi.h .
+WORKDIR /build/out/bqn
 RUN cp /build/CBQN/BQN.exe .
-RUN cp /build/CBQN/cbqn.lib /build/CBQN/cbqn.dll /build/CBQN/include/bqnffi.h ./libcbqn/
 COPY ./licenses/ ./licenses/
 COPY ./release.txt ./readme.txt
-RUN zip -r bqn.zip .
+WORKDIR /build/out
+RUN zip -r ./bqn.zip ./bqn
