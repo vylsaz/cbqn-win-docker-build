@@ -27,6 +27,7 @@ RUN make && make install
 
 WORKDIR /build
 # disable caching for git clone
+ADD https://api.github.com/repos/dzaima/CBQN/branches/develop /tmp/bustcache.json
 RUN git clone --recurse-submodules --depth 1 -b ${BRANCH} https://github.com/dzaima/CBQN.git
 WORKDIR /build/CBQN
 COPY ./bqnres.rc ./bqnres.rc
