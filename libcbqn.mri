@@ -1,0 +1,6 @@
+create libcbqn.a
+addlib libcbqn1.a
+addlib /build/lib/libdl.a
+addlib /build/lib/libffi.a
+save
+end
