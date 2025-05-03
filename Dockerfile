@@ -10,8 +10,8 @@ ARG DLL_OPTS=""
 ARG LIB_OPTS=""
 
 ENV HOST=x86_64-w64-mingw32
-ENV LIBFFI_VER=3.4.6
-ENV DLFCN_VER=1.4.1
+ENV LIBFFI_VER=3.4.8
+ENV DLFCN_VER=1.4.2
 
 WORKDIR /build
 ADD https://github.com/libffi/libffi/releases/download/v${LIBFFI_VER}/libffi-${LIBFFI_VER}.tar.gz \
