@@ -84,7 +84,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if git show-ref --tags --verify --quiet "refs/tags/${{ env.TAG }}"; then
-            gh release delete ${{ env.TAG }} -y
+            gh release delete ${{ env.TAG }} -y --cleanup-tag
           fi
       - 
         name: Release
@@ -102,4 +102,4 @@ jobs:
             | file | SHA256 |
             | - | - |
             | cbqn-ucrt-x86_64.zip | `${{ env.SHA256_UCRT }}` |
-            | cbqn-msvcrt-x86_64.zip | `${{ env.SHA256_MSVCR }}` |
+            | cbqn-msvcrt-x86_64.zip | `${{ env.SHA256_MSVCRT }}` |
