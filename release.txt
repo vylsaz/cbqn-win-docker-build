@@ -6,7 +6,5 @@ Included:
   - libcbqn/libcbqn.a: static library, for use with a mingw compiler of _corresponding C runtime_
   - licenses/: licenses for CBQN
 
-
 Note:
-  * uses UCRT 
   * UTF-8 support for BQN.exe should work for Windows 10 Version 1903 or later, and Windows 11
