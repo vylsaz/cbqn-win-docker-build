@@ -20,10 +20,10 @@ ADD https://github.com/dlfcn-win32/dlfcn-win32/archive/v${DLFCN_VER}.tar.gz dlfc
 RUN tar -xf libffi.tar.gz
 RUN tar -xf dlfcn-win32.tar.gz
 WORKDIR /build/libffi-${LIBFFI_VER}
-RUN ./configure --prefix="/build" --host=${HOST} --enable-static --disable-symvers
+RUN ./configure --prefix="/build" --host=${HOST} --enable-static --disable-shared --disable-symvers
 RUN make && make install
 WORKDIR /build/dlfcn-win32-${DLFCN_VER}
-RUN ./configure --prefix="/build" --cc=${HOST}-clang --cross-prefix="${HOST}-" --enable-static
+RUN ./configure --prefix="/build" --cc=${HOST}-clang --cross-prefix="${HOST}-" --enable-static --disable-shared
 RUN make && make install
 
 WORKDIR /build
