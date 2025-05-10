@@ -35,4 +35,4 @@ RUN echo "  * uses UCRT" >> ./readme.txt
 
 WORKDIR /build
 COPY ./build.sh ./build.sh
-RUN ./build.sh
+RUN chmod +x ./build.sh && ./build.sh
