@@ -38,27 +38,45 @@ jobs:
             echo "PRERELEASE=false" >> $GITHUB_ENV
           fi
       - 
-        name: Build Docker Image
+        name: Build Docker Image (UCRT)
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: false
-          tags: winbqn
+          tags: winbqn-ucrt
           build-args: |
             NATIVE=0
             BRANCH=${{ env.BRANCH }}
             VERSION=${{ env.VERSION }}
       - 
-        name: Get Zip
+        name: Build Docker Image (MSVCRT)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./extra.Dockerfile
+          push: false
+          tags: winbqn-msvcrt
+          build-args: |
+            NATIVE=0
+            BRANCH=${{ env.BRANCH }}
+            VERSION=${{ env.VERSION }}
+      - 
+        name: Get Zips
         run: |
-          docker create --name build winbqn
-          docker cp build:/build/out/bqn.zip cbqn-ucrt-x86_64.zip
-          docker rm build
+          docker create --name build-ucrt winbqn-ucrt
+          docker cp build-ucrt:/build/out/bqn.zip cbqn-ucrt-x86_64.zip
+          docker rm build-ucrt
+          docker create --name build-msvcrt winbqn-msvcrt
+          docker cp build-msvcrt:/build/out/bqn.zip cbqn-msvcrt-x86_64.zip
+          docker rm build-msvcrt
       -
         name: Get SHA256
         run: |
-          SHA256=$(sha256sum cbqn-ucrt-x86_64.zip | awk '{print $1}')
-          echo "SHA256=${SHA256}" >> $GITHUB_ENV
+          SHA256_UCRT=$(sha256sum cbqn-ucrt-x86_64.zip | awk '{print $1}')
+          SHA256_MSVCRT=$(sha256sum cbqn-msvcrt-x86_64.zip | awk '{print $1}')
+          echo "SHA256_UCRT=${SHA256_UCRT}" >> $GITHUB_ENV
+          echo "SHA256_MSVCRT=${SHA256_MSVCRT}" >> $GITHUB_ENV
       -
         name: Delete Previous Release
         if: ${{ contains(inputs.delete_prev, 'true') }}
@@ -75,8 +93,13 @@ jobs:
           tag_name: ${{ env.TAG }}
           draft: false
           prerelease: ${{ env.PRERELEASE }}
-          files: cbqn-ucrt-x86_64.zip
+          files: |
+            cbqn-ucrt-x86_64.zip
+            cbqn-msvcrt-x86_64.zip
           body: |
             Branch: `${{ env.BRANCH }}`
 
-            SHA256: `${{ env.SHA256 }}`
+            | file | SHA256 |
+            | - | - |
+            | cbqn-ucrt-x86_64.zip | `${{ env.SHA256_UCRT }}` |
+            | cbqn-msvcrt-x86_64.zip | `${{ env.SHA256_MSVCR }}` |
