@@ -72,20 +72,18 @@ jobs:
           docker rm build-msvcrt
       -
         name: Get SHA256
+        id: sha256
         run: |
           SHA256_UCRT=$(sha256sum cbqn-ucrt-x86_64.zip | awk '{print $1}')
           SHA256_MSVCRT=$(sha256sum cbqn-msvcrt-x86_64.zip | awk '{print $1}')
-          echo "SHA256_UCRT=${SHA256_UCRT}" >> $GITHUB_ENV
-          echo "SHA256_MSVCRT=${SHA256_MSVCRT}" >> $GITHUB_ENV
+          echo "SHA256_UCRT=${SHA256_UCRT}" >> $GITHUB_OUTPUT
+          echo "SHA256_MSVCRT=${SHA256_MSVCRT}" >> $GITHUB_OUTPUT
       -
         name: Delete Previous Release
         if: ${{ contains(inputs.delete_prev, 'true') }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git show-ref --tags --verify --quiet "refs/tags/${{ env.TAG }}"; then
-            gh release delete ${{ env.TAG }} -y --cleanup-tag
-          fi
       - 
         name: Release
         uses: softprops/action-gh-release@v2
@@ -101,5 +99,5 @@ jobs:
 
             | file | SHA256 |
             | - | - |
-            | cbqn-ucrt-x86_64.zip | `${{ env.SHA256_UCRT }}` |
-            | cbqn-msvcrt-x86_64.zip | `${{ env.SHA256_MSVCRT }}` |
+            | cbqn-msvcrt-x86_64.zip | `${{ steps.sha256.outputs.SHA256_MSVCRT }}` |
+            | cbqn-ucrt-x86_64.zip | `${{ steps.sha256.outputs.SHA256_UCRT }}` |
