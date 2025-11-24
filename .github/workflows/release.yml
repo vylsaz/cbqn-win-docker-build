@@ -84,6 +84,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if git show-ref --tags --verify --quiet "refs/tags/${{ env.TAG }}"; then
+            gh release delete ${{ env.TAG }} -y --cleanup-tag
+          fi
       - 
         name: Release
         uses: softprops/action-gh-release@v2
