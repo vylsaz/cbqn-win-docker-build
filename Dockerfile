@@ -19,7 +19,8 @@ ADD https://github.com/libffi/libffi/releases/download/v${LIBFFI_VER}/libffi-${L
 ADD https://github.com/dlfcn-win32/dlfcn-win32/archive/v${DLFCN_VER}.tar.gz dlfcn-win32.tar.gz
 
 # disable caching for git clone
-ADD https://api.github.com/repos/dzaima/CBQN/branches/develop /tmp/bustcache.json
+ARG CACHEBUST="Set this variable to avoid caching"
+RUN echo CACHEBUST=${CACHEBUST}
 RUN git clone --recurse-submodules --depth 1 -b ${BRANCH} https://github.com/dzaima/CBQN.git
 
 WORKDIR /build/CBQN
