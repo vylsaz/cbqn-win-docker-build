@@ -22,6 +22,7 @@ jobs:
       VERSION: ""
       TAG: auto
       PRERELEASE: true
+      EXE_OPTS: "f=-DREPL_INTERRUPT"
     steps:
       - 
         name: Checkout
@@ -49,6 +50,7 @@ jobs:
             NATIVE=0
             BRANCH=${{ env.BRANCH }}
             VERSION=${{ env.VERSION }}
+            EXE_OPTS=${{ env.EXE_OPTS }}
       - 
         name: Build Docker Image (MSVCRT)
         uses: docker/build-push-action@v5
@@ -61,6 +63,7 @@ jobs:
             NATIVE=0
             BRANCH=${{ env.BRANCH }}
             VERSION=${{ env.VERSION }}
+            EXE_OPTS=${{ env.EXE_OPTS }}
       - 
         name: Get Zips
         run: |
