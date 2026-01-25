@@ -23,9 +23,7 @@ jobs:
     steps:
       - 
         name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v6
       -
         name: Set Branch
         run: |
@@ -37,7 +35,7 @@ jobs:
           fi
       - 
         name: Build Docker Image (UCRT)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -50,7 +48,7 @@ jobs:
             EXE_OPTS=${{ env.EXE_OPTS }}
       - 
         name: Build Docker Image (MSVCRT)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./extra.Dockerfile
