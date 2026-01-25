@@ -8,9 +8,6 @@ on:
         description: "CBQN Version"
         default: ""
         required: false
-      delete_prev:
-        description: "Delete previous release"
-        type: boolean
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -81,15 +78,6 @@ jobs:
           SHA256_MSVCRT=$(sha256sum cbqn-msvcrt-x86_64.zip | awk '{print $1}')
           echo "SHA256_UCRT=${SHA256_UCRT}" >> $GITHUB_OUTPUT
           echo "SHA256_MSVCRT=${SHA256_MSVCRT}" >> $GITHUB_OUTPUT
-      -
-        name: Delete Previous Release
-        if: ${{ contains(inputs.delete_prev, 'true') }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if git show-ref --tags --verify --quiet "refs/tags/${{ env.TAG }}"; then
-            gh release delete ${{ env.TAG }} -y --cleanup-tag
-          fi
       - 
         name: Release
         uses: softprops/action-gh-release@v2
