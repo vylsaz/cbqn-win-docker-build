@@ -7,4 +7,5 @@ Included:
   - licenses/: licenses for CBQN
 
 Note:
+  * for REPL history and config, look inside folder %LocalAppData%\CBQN
   * UTF-8 support for BQN.exe should work for Windows 10 Version 1903 or later, and Windows 11

@@ -19,8 +19,8 @@ ARG DLL_OPTS=""
 ARG LIB_OPTS=""
 
 ENV HOST=x86_64-w64-mingw32
-ENV LLVM_MINGW_VER=20250430
-ENV LIBFFI_VER=3.5.2
+ENV LLVM_MINGW_VER=20260616
+ENV LIBFFI_VER=3.8.0
 ENV DLFCN_VER=1.4.2
 
 RUN mkdir -p /opt/llvm-mingw
@@ -49,7 +49,8 @@ COPY ./libcbqn.mri ./libcbqn.mri
 WORKDIR /build/out/bqn
 COPY ./licenses/ ./licenses/
 COPY ./release.txt ./readme.txt
-RUN echo "  * uses ${CRT}" >> ./readme.txt
+RUN echo "  * C runtime: ${CRT}" >> ./readme.txt
+RUN [ ${NATIVE} -eq 1 ] && echo "  * native build" >> ./readme.txt || true
 
 WORKDIR /build
 COPY ./build.sh ./build.sh

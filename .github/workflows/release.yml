@@ -84,8 +84,8 @@ jobs:
           draft: false
           prerelease: ${{ env.PRERELEASE }}
           files: |
-            cbqn-ucrt-x86_64.zip
             cbqn-msvcrt-x86_64.zip
+            cbqn-ucrt-x86_64.zip
           body: |
             Branch: `${{ env.BRANCH }}`
 
