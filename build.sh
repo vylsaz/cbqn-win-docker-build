@@ -1,5 +1,5 @@
-#!/bin/bash
-set -xe
+#!/usr/bin/env bash
+set -eux
 
 cd /build
 tar -xf libffi.tar.gz
