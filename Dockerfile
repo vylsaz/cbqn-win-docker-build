@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM mstorsjo/llvm-mingw:latest
+FROM docker.io/mstorsjo/llvm-mingw:latest
 
 ARG BRANCH=develop
 ARG NATIVE=0

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG UBUNTU_VER=22.04
-FROM ubuntu:${UBUNTU_VER}
+FROM docker.io/library/ubuntu:${UBUNTU_VER}
 
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -qqy --no-install-recommends \
