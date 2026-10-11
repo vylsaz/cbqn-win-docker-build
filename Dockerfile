@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM docker.io/mstorsjo/llvm-mingw:latest
 
+ARG ARCH=x86_64
 ARG BRANCH=develop
 ARG NATIVE=0
 ARG REPLXX=1
@@ -9,7 +10,7 @@ ARG EXE_OPTS=""
 ARG DLL_OPTS=""
 ARG LIB_OPTS=""
 
-ENV HOST=x86_64-w64-mingw32
+ENV HOST=${ARCH}-w64-mingw32
 ENV LIBFFI_VER=3.8.0
 ENV DLFCN_VER=1.4.2
 

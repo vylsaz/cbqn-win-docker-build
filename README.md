@@ -18,6 +18,7 @@ You can pass in arguments by adding `--build-arg ARG=VALUE` to the command. The 
 - `DLL_OPTS`, other options for build when building the shared library, default: `""`
 - `LIB_OPTS`, other options for build when building the static library, default: `""`
 - `CACHEBUST`, set to value like `"$(Get-Date)"` to avoid caching of `git clone` by docker
+- `ARCH`, default: `x86_64`, set to `aarch64` to build for ARM 64 (untested by me)
 
 Then, you can get bqn.zip by:
 ```powershell

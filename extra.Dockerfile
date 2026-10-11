@@ -9,6 +9,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 ARG UBUNTU_VER
+ARG ARCH=x86_64
 ARG CRT=msvcrt
 ARG BRANCH=develop
 ARG NATIVE=0
@@ -18,7 +19,7 @@ ARG EXE_OPTS=""
 ARG DLL_OPTS=""
 ARG LIB_OPTS=""
 
-ENV HOST=x86_64-w64-mingw32
+ENV HOST=${ARCH}-w64-mingw32
 ENV LLVM_MINGW_VER=20261006
 ENV LIBFFI_VER=3.8.0
 ENV DLFCN_VER=1.4.2
